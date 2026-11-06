@@ -9,6 +9,14 @@ try {
 // Load .env relative to server folder
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
+const requiredEnv = ['MONGO_URI', 'JWT_SECRET'];
+const missingEnv = requiredEnv.filter((name) => !process.env[name]);
+
+if (missingEnv.length > 0) {
+  console.error(`[Server] Missing required environment variables: ${missingEnv.join(', ')}`);
+  process.exit(1);
+}
+
 const app = require('./app');
 const connectDB = require('./config/db');
 
